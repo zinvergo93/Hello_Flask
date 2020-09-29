@@ -5,10 +5,6 @@ import os
 
 app = Flask(__name__)
 
-# @app.route('/')
-# def hello():
-#     return "Hey Flask"
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
 db = SQLAlchemy(app)
@@ -33,7 +29,7 @@ class MovieSchema(ma.Schema):
     class Meta:
         fields = ('title', 'year', 'rating', 'genre', 'starring')
 
-movie_schema = movieSchema()
+movie_schema = MovieSchema()
 movies_schema = MovieSchema(many = True)
 
 
@@ -65,7 +61,6 @@ def get_movie(id):
     movie = Movie.query.get(id)
     return movie_schema.jsonify(movie)
 
-# Endpoint for updating a guide
 @app.route("/movie/<id>", methods =["PUT"])
 def movie_update(id):
     movie = Movie.query.get(id)
@@ -80,7 +75,6 @@ def movie_update(id):
     movie.genre = genre
     movie.starring = starring
 
-# Endpoint for deleting a record
 @app.route("/movie/<id>", methods =["DELETE"])
 def movie_delete(id):
     guide = Guide.query.get(id)
